@@ -106,20 +106,20 @@ def randomize_values():
   """
   Used to initialize parameters in the synapses and Output neurons.
   """
-  Output.set_states({'v_th' : np.random.normal(V_TH0_2, V_TH0_2*DEV, M)})
+  Output.set_states({'v_th' : np.random.normal(V_TH0_2, V_TH0_2*DEV, K)})
 
   S_HO.set_states({
-    'w' : np.random.normal(W0,W0*DEV,M*M),
-    'w_min' : np.random.normal(W_MIN0, W_MIN0*DEV, M*M),
-    'w_max' : np.random.normal(W_MAX0, W_MAX0*DEV, M*M), 
-    'a_plus' : np.random.normal(A_PLUS0, A_PLUS0*DEV, M*M), 
-    'a_minus' : np.random.normal(A_MINUS0, A_MINUS0*DEV, M*M),
-    'b_plus' : np.random.normal(B_PLUS0, B_PLUS0*DEV, M*M),
-    'b_minus' : np.random.normal(B_MINUS0, B_MINUS0*DEV, M*M)
+    'w' : np.random.normal(W0,W0*DEV,M*K),
+    'w_min' : np.random.normal(W_MIN0, W_MIN0*DEV, M*K),
+    'w_max' : np.random.normal(W_MAX0, W_MAX0*DEV, M*K), 
+    'a_plus' : np.random.normal(A_PLUS0, A_PLUS0*DEV, M*K), 
+    'a_minus' : np.random.normal(A_MINUS0, A_MINUS0*DEV, M*K),
+    'b_plus' : np.random.normal(B_PLUS0, B_PLUS0*DEV, M*K),
+    'b_minus' : np.random.normal(B_MINUS0, B_MINUS0*DEV, M*K)
   })
 
   # check to make sure all values are non negative and below max
-  for i in range(0,M*M):
+  for i in range(0,M*K):
     if (S_HO.w[i] < S_HO.w_min[i]):
       S_HO.w[i] = S_HO.w_min[i]
     elif (S_HO.w[i] > S_HO.w_max[i]):
@@ -216,13 +216,13 @@ try:
       total_spikes = float(event_mon.num_events)
       event_train = event_mon.event_trains()
       if (total_spikes > 0):
-        for k in range(0,M):
+        for k in range(0,K):
           # print 'total spikes: %d' % event_mon.num_events
           print 'total spikes for neuron %d: %d' % (k, len(event_train[k]))        
           # print 'spikes for neuron %d: %s' % (k, str(event_train[k]))    
-          Output.v_th[k]+= GAMMA*(len(event_train[k])/total_spikes-ACTIVITY_TARGET)
+          Output.v_th[k]+= GAMMA*(len(event_train[k])/total_spikes-ACTIVITY_TARGET_2)
           Output.v_th[k] = max(Output.v_th[k], MIN_VTH)
-          # print 'change: %f, value: %f' % (GAMMA*(len(event_train[k])/total_spikes-ACTIVITY_TARGET), Output.v_th[k])
+          # print 'change: %f, value: %f' % (GAMMA*(len(event_train[k])/total_spikes-ACTIVITY_TARGET_2), Output.v_th[k])
       else:
         print 'NO SPIKES in output'
 
@@ -245,3 +245,4 @@ except(KeyboardInterrupt, SystemExit):
   s = signal.signal(signal.SIGINT, signal.SIG_IGN)
   save_network(save_file, i, j+x)
   signal.signal(signal.SIGINT, s)
+  

@@ -20,8 +20,6 @@ def load_network_for_training(file_name):
   Output thresholds are loaded.
   current digit and round from the last training round are loaded.
   The training set is reloaded to ensure it is in the same shuffled order.
-
-  The synapses are also displayed prior to training.
   """
   global training_set, start_round, start_digit
   try:
@@ -133,7 +131,7 @@ save_file = raw_input('enter file to save weights to: ').strip()
 
 # Don't enable these monitors during long training runs
 # It will eat up enormous amounts of memory and stop the simulation
-# after ~2400 digits
+# after ~2400 digits (for M=50)
 # out_mon = StateMonitor(Output, ['I','v'], record=True)
 # in_mon = StateMonitor(Input, 'v', record=True)
 # syn_mon = StateMonitor(S, 'w', record=True)
@@ -170,17 +168,17 @@ try:
         # plot(in_mon.t/ms, in_mon.v[2], '-go', label='voltage[2]')
         # show()   
 
-      total_spikes = float(event_mon.num_events)
+      total_spikes = float(event_mon.sum_events)
       event_train = event_mon.event_trains()
       for k in range(0,M):
-        # print 'total spikes: %d' % event_mon.num_events
+        # print 'total spikes: %d' % event_mon.sum_events
         print 'total spikes for neuron %d: %d' % (k, len(event_train[k]))
         # print 'neuron %d, activity:' % i
         Output.v_th[k]+= GAMMA*(len(event_train[k])/total_spikes-ACTIVITY_TARGET)
         Output.v_th[k] = max(Output.v_th[k], MIN_VTH)
         # print 'change: %f, value: %f' % (GAMMA*(len(event_train[k])/total_spikes-ACTIVITY_TARGET), Output.v_th[k])
       
-      # reset spike counter
+      # reset spike counter and make sure to clean up old object
       del event_mon
       event_mon = EventMonitor(Output, 'STDP_spike')
 
@@ -223,16 +221,3 @@ except (KeyboardInterrupt, SystemExit):
   s = signal.signal(signal.SIGINT, signal.SIG_IGN)
   save_network(save_file, i, j+x)
   signal.signal(signal.SIGINT, s)
-
-
-
-
-
-
-
-
-
-
-
-
-

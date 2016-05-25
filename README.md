@@ -4,6 +4,8 @@ The simulations use the brian2 simulator. Documentation is available here: https
 
 I used Anaconda to manage python details, it makes it pretty easy to setup the simulator along with all the othe python dependencies and also works on mac and PC. Most important is that I used python 2.7 instead of python 3.x. I found that using the older version is more stable with libraries such as brian2. The code will throw errors if being run in 3.x. If you are like me and normally run python3, look into anaconda environments (http://conda.pydata.org/docs/using/envs.html). I set up an environment to run python 2.7 while working with this project. I also run the code using ipython, but this is not necessary.
 
+I store simulation data using a ".dat" extension. Since these files are very large, they are ignored by git as specified in ".gitignore". Alternatively, ".npy" would also make sense as a file extension as the network data is stored to a binary file using the NumPy.save function.
+
 # Files
 
 ## NetworkConstants.py
@@ -26,9 +28,6 @@ This program is used to graph synaptic weights for a 2-layer network. Any list o
 
 ## GrapherThree.py
 This program is used to graph synaptic weights for a 3-layer network. It's behavior is very similar to Grapher.py.
-
-## DONE_weights50_2.dat
-An example of weights from a completed run of Simulation.py with M=50.
 
 #mnist.pkl.gz
 The MNIST digit set in pickled form.

@@ -7,9 +7,6 @@ import cPickle, gzip, os, sys, signal
 """
 A quick script to visualize the synaptic weights for the second layer
 of the network.
-MAKE SURE THAT CONSTANTS(M) ARE SET CORRECTLY IN NetworkConstants
-before runing this script. Otherwise an error will be thrown by
-the np.reshape commands.
 """
 
 def graph_synapses(file_name, to_graph=None):

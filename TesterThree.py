@@ -290,3 +290,4 @@ except(KeyboardInterrupt, SystemExit):
   s = signal.signal(signal.SIGINT, signal.SIG_IGN)
   save_interrupted_testing_run(save_file, i)
   signal.signal(signal.SIGINT, s)
+  
